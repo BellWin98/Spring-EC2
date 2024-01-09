@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js axios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        object {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <object type="text/html" data="header.html"></object>
+    <div class="container">
+        <div class="page-header"><h1>게시글 목록</h1></div>
+        <div class="float-end"><a href="./7. css_bootstrap_postregister.html"><button class="btn btn-info">글쓰기</button></a></div>
+        <table class="table" id="data-table">
+            <thead>
+                <tr> 
+                    <th>id</th>
+                    <th>title</th>
+                    <th>contents</th>
+                    <th>author</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+    // 데이터 단건 조회 (GPT 사용)
+    async function callBackImprovementSingleData(){
+        try{
+            const response1 = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
+            console.log("axios: ");
+            console.log(response1);
+            let tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+            let row = tableBody.insertRow();
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+
+            cell1.textContent = response1.data.id;
+            cell2.textContent = response1.data.title;
+            cell3.textContent = response1.data.userId;
+        } catch(e){
+            console.log(e);
+        }
+    }
+    // 복수 데이터 조회 (GPT 사용)
+    async function callBackImprovementMultiData(){
+        try{
+            const response1 = await axios.get('https://jsonplaceholder.typicode.com/posts');
+            let tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+            const dataArray = Array.isArray(response1.data) ? response1.data : Object.values(response1.data);
+            dataArray.forEach(element => {
+                let row = tableBody.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+
+                cell1.textContent = element.id;
+                cell2.textContent = element.title;
+                cell3.textContent = element.userId;
+            });
+        } catch(e){
+            console.log(e);
+        }
+    }
+    async function callBackImp(){ // 강사님 코드 (복수 데이터 조회)
+        try{
+            let myTarget = document.getElementsByClassName("table")[0];
+            const response1 = await axios.get('http://localhost:8080/csr/json');
+            response1.data.forEach(element => {
+                myTarget.innerHTML += `<tr><td>${element.id}</td><td>${element.title}</td><td>${element.contents}</td><td>${element.author}</td></tr>`;
+            });
+        } catch(e){
+            console.log(e);
+        }
+    }
+    // callBackImprovementSingleData();
+    // callBackImprovementMultiData();
+    callBackImp();
+</script>
+</html>

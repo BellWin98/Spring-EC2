@@ -17,12 +17,14 @@ public class PostController {
         this.postService = new PostService();
     }
 
+    // 사용자에게 data return
     @GetMapping("/csr/json") // 사용자가 해당 url을 입력하면 Controller에 있는 해당 url의 메서드를 실행하여 데이터 return
     @ResponseBody // 데이터를 json형식으로 변환해서 줌
     public List<Post> getPosts(){
         return postService.findAll();
     }
 
+    // 사용자에게 화면(+data) return
     @GetMapping("/ssr")
     public String getPostsSsr(Model model){ // Model: model에 들어간 데이터는 화면(HTML)에 들어가기로 약속됨.
         List<Post> posts = postService.findAll();
